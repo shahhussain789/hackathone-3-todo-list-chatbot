@@ -40,7 +40,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
 
   if (isEditing) {
     return (
-      <div className="p-3 sm:p-5 rounded-2xl shadow-sm ring-2" style={{ background: 'var(--card)', borderColor: 'var(--primary)', ringColor: 'var(--primary)' }}>
+      <div className="p-3 sm:p-5 rounded-2xl shadow-sm ring-2 ring-indigo-500" style={{ background: 'var(--card)' }}>
         <input
           type="text"
           value={editTitle}
