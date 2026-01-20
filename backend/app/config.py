@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     # Environment
     environment: str = "development"
 
+    # OpenAI (optional - not required for rule-based chat)
+    openai_api_key: str = ""
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

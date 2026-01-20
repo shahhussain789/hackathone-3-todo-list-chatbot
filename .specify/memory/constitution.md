@@ -1,24 +1,30 @@
 <!--
   SYNC IMPACT REPORT
   ==================
-  Version change: 0.0.0 → 1.0.0 (MAJOR - Initial ratification)
+  Version change: 1.0.0 → 2.0.0 (MAJOR - Architectural shift to AI Chatbot paradigm)
 
-  Modified principles: N/A (initial version)
+  Modified principles:
+    - I. Spec-Driven Development → Retained (unchanged)
+    - II. Security-First Design → Retained (updated for AI context)
+    - III. Deterministic Reproducibility → Replaced with III. Statelessness
+    - IV. Zero Manual Coding → Replaced with IV. AI Action Accuracy
+    - V. Separation of Concerns → Replaced with V. Modularity (MCP Tools)
+    - VI. Authentication & Authorization → Retained (unchanged)
+    - VII. Data Integrity & Isolation → Replaced with VII. Reproducibility (Conversation History)
 
   Added sections:
-    - I. Spec-Driven Development
-    - II. Security-First Design
-    - III. Deterministic Reproducibility
-    - IV. Zero Manual Coding
-    - V. Separation of Concerns
-    - VI. Authentication & Authorization
-    - VII. Data Integrity & Isolation
-    - Technology Stack Constraints
-    - Security Constraints
-    - Quality Standards
-    - Governance
+    - III. Statelessness (server holds no in-memory state)
+    - IV. AI Action Accuracy (AI reflects user intent)
+    - V. Modularity - MCP Tools Only (AI interacts only via MCP)
+    - VI. Clarity (responses understandable and friendly)
+    - VII. Reproducibility - Conversation History (database persistence)
+    - Updated Technology Stack for OpenAI Agents SDK, MCP SDK, ChatKit
 
-  Removed sections: N/A (initial version)
+  Removed sections:
+    - III. Deterministic Reproducibility (replaced with Statelessness)
+    - IV. Zero Manual Coding (replaced with AI Action Accuracy)
+    - V. Separation of Concerns (replaced with Modularity)
+    - VII. Data Integrity & Isolation (merged into Reproducibility)
 
   Templates requiring updates:
     - .specify/templates/plan-template.md: ✅ Compatible (Constitution Check section aligns)
@@ -28,93 +34,85 @@
   Follow-up TODOs: None
 -->
 
-# Todo Full-Stack Web Application Constitution
+# Todo AI Chatbot Constitution
 
 ## Core Principles
 
-### I. Spec-Driven Development
+### I. Accuracy
 
-Every feature MUST originate from an approved specification before implementation begins.
+AI actions MUST correctly reflect user intent at all times.
 
-- All implementation work MUST trace back to a written spec requirement
-- No code generation without an approved spec document in `specs/<feature>/spec.md`
-- Changes to requirements MUST update the spec first, then regenerate affected code
-- Same specifications MUST produce equivalent outputs across regeneration cycles
+- All task operations (create, read, update, delete, mark complete) MUST be executed as the user intends
+- AI MUST confirm understanding before executing ambiguous requests
+- AI MUST NOT infer or assume task details not explicitly provided by the user
+- Failed operations MUST be reported clearly with actionable error messages
+- AI MUST validate the existence of tasks before attempting modifications
 
-**Rationale**: Ensures traceability, prevents scope creep, and maintains alignment between requirements and implementation.
+**Rationale**: Users trust the AI to manage their tasks. Incorrect actions erode trust and may cause data loss or confusion.
 
-### II. Security-First Design
+### II. Clarity
 
-Security MUST be treated as a foundational requirement, not an afterthought.
+All AI responses MUST be understandable and friendly.
 
-- Authentication and authorization MUST be designed before feature implementation
+- Responses MUST use natural, conversational language
+- Confirmations MUST be provided for every successful action
+- Error messages MUST explain what went wrong and suggest remediation
+- Task lists MUST be formatted for easy readability
+- AI MUST NOT use technical jargon unless the user demonstrates technical proficiency
+- Responses SHOULD acknowledge the user's request before presenting results
+
+**Rationale**: A chatbot interface requires clear communication. Users should feel confident they understand what the AI has done.
+
+### III. Statelessness
+
+The server MUST hold no in-memory state between requests.
+
+- Each API request MUST be self-contained and independently processable
+- No session memory stored in server RAM between requests
+- All conversation context MUST be retrieved from the database on each request
+- Server restarts MUST NOT lose any user data or conversation history
+- Horizontal scaling MUST be possible without session affinity
+
+**Rationale**: Stateless architecture enables horizontal scaling, simplifies deployment, and ensures reliability under load.
+
+### IV. Reproducibility
+
+Conversation history MUST be persisted in the database for replay and continuity.
+
+- All user messages MUST be stored with timestamps and user association
+- All AI responses MUST be stored with timestamps and conversation linkage
+- Conversation threads MUST be retrievable to provide context for follow-up interactions
+- Message history MUST support pagination for long conversations
+- Database MUST be the single source of truth for conversation state
+
+**Rationale**: Persistent conversation history enables context-aware responses and allows users to review past interactions.
+
+### V. Security
+
+Authentication and user isolation MUST be enforced at all layers.
+
 - All API endpoints (except signup/signin) MUST require valid JWT authentication
 - Unauthorized requests MUST return HTTP 401 (Unauthorized)
 - Cross-user access attempts MUST return HTTP 403 (Forbidden)
 - JWT expiry MUST be enforced; expired tokens MUST be rejected
 - All secrets MUST be environment-based via `.env` files (no hardcoded keys)
-- Backend MUST never rely on frontend session state for security decisions
-
-**Rationale**: Security vulnerabilities are costly to fix post-deployment. A security-first approach prevents common attack vectors and data breaches.
-
-### III. Deterministic Reproducibility
-
-Given the same inputs (specs, configurations), the system MUST produce consistent, predictable outputs.
-
-- Spec → Plan → Tasks → Implementation flow MUST be repeatable
-- No implementation-time decisions that contradict approved specs
-- All randomness (UUIDs, tokens) MUST use cryptographically secure generators
-- Database queries MUST be deterministic given the same input parameters
-
-**Rationale**: Enables reliable testing, debugging, and system evolution. Supports the AI-agentic development model.
-
-### IV. Zero Manual Coding
-
-All implementation MUST be generated via Claude Code; manual coding is prohibited.
-
-- No hand-written code outside of Claude Code generation sessions
-- All code changes MUST be traceable to a Claude Code prompt and session
-- Prompt History Records (PHRs) MUST document all generation sessions
-- Code reviews focus on prompt quality and generated output correctness
-
-**Rationale**: Validates the AI-agentic development methodology and ensures full traceability of all implementation decisions.
-
-### V. Separation of Concerns
-
-Clear architectural boundaries MUST exist between frontend, backend, authentication, and data layers.
-
-- Frontend (Next.js 16+): UI components, client-side routing, API consumption
-- Backend (FastAPI): Business logic, API endpoints, request validation
-- Authentication (Better Auth + JWT): Session management, token issuance/verification
-- Database (SQLModel + Neon PostgreSQL): Data persistence, schema management
-- Each layer MUST communicate only through defined interfaces (REST API, JWT tokens)
-
-**Rationale**: Enables independent development, testing, and deployment of each layer. Simplifies debugging and maintenance.
-
-### VI. Authentication & Authorization
-
-Stateless JWT-based authentication MUST be implemented for all protected operations.
-
-- Better Auth MUST handle user signup, signin, and session management on the frontend
-- JWT tokens MUST be issued upon successful authentication
-- Backend MUST verify JWT signature using the shared `BETTER_AUTH_SECRET`
-- User ID in JWT payload MUST match the authenticated user for all operations
-- Token refresh mechanisms MUST be implemented for session continuity
-- Logout MUST invalidate the current session appropriately
-
-**Rationale**: Stateless authentication scales horizontally and simplifies backend architecture while maintaining security.
-
-### VII. Data Integrity & Isolation
-
-Multi-user data isolation MUST be enforced at the database query level.
-
-- Every Task record MUST reference a User via `user_id` foreign key
-- All database queries for tasks MUST filter by the authenticated user's ID
-- Users MUST only see and modify their own tasks
+- Users MUST only access their own tasks and conversations
 - Backend MUST validate ownership before any read, update, or delete operation
-- Database queries MUST be user-scoped by default
 
-**Rationale**: Prevents data leakage between users and ensures privacy compliance.
+**Rationale**: Multi-user applications require strict isolation. Security vulnerabilities are costly to fix post-deployment.
+
+### VI. Modularity
+
+The AI agent MUST interact with the system only through MCP (Model Context Protocol) tools.
+
+- All task operations (CRUD) MUST be performed through defined MCP tools
+- AI MUST NOT directly access the database or bypass the tool layer
+- Each MCP tool MUST have a single, well-defined responsibility
+- Tool responses MUST be structured and parseable
+- New functionality MUST be added by creating new MCP tools, not modifying AI behavior
+- Tool failures MUST be gracefully handled with user-friendly error messages
+
+**Rationale**: MCP tools provide a controlled interface between the AI and the system, ensuring predictability, testability, and security.
 
 ## Technology Stack Constraints
 
@@ -122,19 +120,21 @@ The following technology stack is FIXED and MUST NOT be changed without a formal
 
 | Layer          | Technology                   | Version/Notes            |
 |----------------|------------------------------|--------------------------|
-| Frontend       | Next.js (App Router)         | 16+ required             |
+| Frontend       | OpenAI ChatKit               | Chat interface           |
 | Backend        | Python FastAPI               | Latest stable            |
+| AI Framework   | OpenAI Agents SDK            | Agent orchestration      |
+| Tool Protocol  | Official MCP SDK             | Model Context Protocol   |
 | ORM            | SQLModel                     | Latest stable            |
 | Database       | Neon Serverless PostgreSQL   | Serverless configuration |
 | Authentication | Better Auth + JWT            | JWT for API auth         |
-| Spec-Driven    | Claude Code + Spec-Kit Plus  | Required methodology     |
 
 **Constraints**:
 - Multi-user support is MANDATORY
 - Persistent storage is REQUIRED (no in-memory data stores)
+- All endpoints MUST be stateless; server holds no session memory
 - JWT secret MUST be shared via `BETTER_AUTH_SECRET` environment variable
 - API responses MUST be JSON-only
-- Backend MUST be stateless
+- Environment variables MUST be used for all configuration
 
 ## Security Constraints
 
@@ -152,7 +152,7 @@ These security requirements are NON-NEGOTIABLE.
 **Additional Security Requirements**:
 - Frontend MUST never trust client-side user identity alone
 - Backend MUST validate JWT signature on every protected request
-- User ID in request path (if any) MUST match JWT payload user ID
+- User ID in JWT payload MUST be used to scope all database queries
 - No secrets in client-side code or version control
 - All passwords MUST be hashed (never stored in plaintext)
 
@@ -164,21 +164,48 @@ These security requirements are NON-NEGOTIABLE.
 - All inputs MUST be validated using Pydantic models
 - Error responses MUST include meaningful error messages
 
-### Frontend Standards
-- UI MUST be responsive (mobile + desktop compatible)
-- Frontend MUST use App Router exclusively (no `pages/` directory)
-- Server Components preferred; `'use client'` only when necessary
-- API calls MUST include proper error handling
+### AI Response Standards
+- Confirmations MUST be provided for every action (create, update, delete, complete)
+- Error messages MUST be user-friendly, not technical stack traces
+- Task lists MUST be formatted clearly (numbered or bulleted)
+- AI MUST gracefully handle invalid or missing tasks
+- AI MUST NOT hallucinate task data that does not exist
+
+### Frontend Standards (ChatKit)
+- Chat interface MUST display messages in real time
+- User input MUST be clearly distinguished from AI responses
+- Loading states MUST be shown during AI processing
+- Error states MUST be visually communicated
 
 ### Database Standards
 - All models MUST include `id`, `created_at`, `updated_at` fields
 - UUID MUST be used for primary keys
 - Foreign key relationships MUST be explicit
-- All migrations MUST be reversible
+- Conversation and message history MUST be stored persistently
+- All database queries MUST be user-scoped
+
+## MCP Tool Requirements
+
+All task operations MUST be implemented as MCP tools with the following structure:
+
+| Tool Name       | Purpose                              | Required Parameters       |
+|-----------------|--------------------------------------|---------------------------|
+| `list_tasks`    | Retrieve user's tasks                | user_id, filters (optional)|
+| `create_task`   | Create a new task                    | user_id, title, description|
+| `get_task`      | Retrieve a specific task             | user_id, task_id          |
+| `update_task`   | Modify task details                  | user_id, task_id, fields  |
+| `delete_task`   | Remove a task                        | user_id, task_id          |
+| `complete_task` | Mark task as complete                | user_id, task_id          |
+
+**Tool Design Principles**:
+- Each tool MUST validate user ownership before execution
+- Each tool MUST return structured JSON responses
+- Each tool MUST handle errors gracefully and return meaningful messages
+- Tools MUST NOT perform multiple unrelated operations
 
 ## Governance
 
-This constitution supersedes all other development practices for the Todo Full-Stack Web Application project.
+This constitution supersedes all other development practices for the Todo AI Chatbot project.
 
 ### Amendment Process
 1. Propose amendment via Architecture Decision Record (ADR)
@@ -188,15 +215,15 @@ This constitution supersedes all other development practices for the Todo Full-S
 5. Propagate changes to dependent templates and documentation
 
 ### Version Policy
-- **MAJOR**: Backward-incompatible changes (principle removal/redefinition)
+- **MAJOR**: Backward-incompatible changes (principle removal/redefinition, architecture shift)
 - **MINOR**: New principle or materially expanded guidance
 - **PATCH**: Clarifications, wording fixes, non-semantic refinements
 
 ### Compliance Verification
 - All PRs MUST verify compliance with this constitution
 - Spec reviews MUST check alignment with core principles
-- Generated code MUST pass security and quality gates
-- Complexity additions MUST be justified in implementation plans
+- MCP tools MUST be tested for correct behavior and error handling
+- AI responses MUST be validated for clarity and accuracy
 
 ### Reference Documents
 - Runtime guidance: `CLAUDE.md`
@@ -210,12 +237,13 @@ This constitution supersedes all other development practices for the Todo Full-S
 
 The project is successful when:
 
-1. All 5 basic Todo features are implemented as a web application
-2. All API endpoints function correctly and securely
+1. Users can interact with tasks via natural language chat interface
+2. AI correctly executes all task operations through MCP tools
 3. Each user can only see and modify their own tasks
-4. JWT authentication works end-to-end (frontend to backend)
-5. Frontend and backend operate independently and communicate via REST API
-6. All implementation is traceable to approved specifications
-7. No manual coding was required outside Claude Code sessions
+4. Conversation history is persisted and provides context for follow-ups
+5. All AI responses are clear, friendly, and actionable
+6. JWT authentication works end-to-end (frontend to backend)
+7. Server is stateless and horizontally scalable
+8. Graceful error handling for all edge cases
 
-**Version**: 1.0.0 | **Ratified**: 2026-01-10 | **Last Amended**: 2026-01-10
+**Version**: 2.0.0 | **Ratified**: 2026-01-10 | **Last Amended**: 2026-01-18

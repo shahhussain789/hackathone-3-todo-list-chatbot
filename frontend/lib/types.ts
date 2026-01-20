@@ -65,3 +65,48 @@ export type ApiResponse<T> = {
   data?: T;
   error?: ErrorResponse;
 };
+
+// Chat types
+export interface ToolCall {
+  tool: string;
+  arguments: Record<string, unknown>;
+  result: Record<string, unknown>;
+}
+
+export interface ChatRequest {
+  message: string;
+  conversation_id?: string;
+}
+
+export interface ChatResponse {
+  response: string;
+  conversation_id: string;
+  tool_calls: ToolCall[];
+}
+
+export interface Message {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  tool_calls?: ToolCall[];
+  created_at: string;
+}
+
+export interface ConversationSummary {
+  id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+  message_count: number;
+}
+
+export interface ConversationListResponse {
+  conversations: ConversationSummary[];
+  total: number;
+}
+
+export interface ConversationDetailResponse {
+  conversation: ConversationSummary;
+  messages: Message[];
+  has_more: boolean;
+}

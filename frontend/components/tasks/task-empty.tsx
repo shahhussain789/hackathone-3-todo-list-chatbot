@@ -1,12 +1,13 @@
 export function TaskEmpty() {
   return (
-    <div className="text-center py-16 px-4">
-      <div className="mx-auto w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mb-6">
+    <div className="text-center py-10 sm:py-16 px-4">
+      <div className="mx-auto w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mb-4 sm:mb-6" style={{ background: 'linear-gradient(to bottom right, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2))' }}>
         <svg
-          className="w-12 h-12 text-indigo-500"
+          className="w-10 h-10 sm:w-12 sm:h-12"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          style={{ color: 'var(--primary)' }}
         >
           <path
             strokeLinecap="round"
@@ -16,12 +17,12 @@ export function TaskEmpty() {
           />
         </svg>
       </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">No tasks yet</h3>
-      <p className="text-gray-500 max-w-sm mx-auto mb-6">
+      <h3 className="text-lg sm:text-xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>No tasks yet</h3>
+      <p className="text-sm sm:text-base max-w-sm mx-auto mb-4 sm:mb-6" style={{ color: 'var(--muted-foreground)' }}>
         Your task list is empty. Add your first task above and start getting things done!
       </p>
-      <div className="flex items-center justify-center space-x-2 text-sm text-indigo-600">
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm" style={{ color: 'var(--primary)' }}>
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
         <span>Type in the box above to add a task</span>

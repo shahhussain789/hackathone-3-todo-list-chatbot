@@ -1,5 +1,7 @@
 """Database models package."""
+from app.models.conversation import Conversation
+from app.models.message import Message
 from app.models.task import Task
 from app.models.user import User
 
-__all__ = ["User", "Task"]
+__all__ = ["User", "Task", "Conversation", "Message"]

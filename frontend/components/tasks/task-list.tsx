@@ -30,6 +30,16 @@ export function TaskList() {
 
   useEffect(() => {
     fetchTasks();
+
+    // Listen for task changes from chatbot
+    const handleTaskChange = () => {
+      fetchTasks();
+    };
+
+    window.addEventListener("tasks-updated", handleTaskChange);
+    return () => {
+      window.removeEventListener("tasks-updated", handleTaskChange);
+    };
   }, [fetchTasks]);
 
   const handleCreateTask = async (title: string, description: string | null) => {
@@ -102,22 +112,22 @@ export function TaskList() {
   if (loading) {
     return (
       <div className="text-center py-16">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent mx-auto"></div>
-        <p className="mt-4 text-gray-500 font-medium">Loading your tasks...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent mx-auto" style={{ borderColor: 'var(--primary)', borderTopColor: 'transparent' }}></div>
+        <p className="mt-4 font-medium" style={{ color: 'var(--muted-foreground)' }}>Loading your tasks...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <TaskForm onSubmit={handleCreateTask} loading={addingTask} />
 
       {error && (
-        <div className="p-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="p-3 sm:p-4 text-sm rounded-xl border flex items-center" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444' }}>
+          <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {error}
+          <span className="break-words">{error}</span>
         </div>
       )}
 
@@ -126,12 +136,12 @@ export function TaskList() {
       ) : (
         <>
           {/* Progress Bar */}
-          <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+          <div className="p-3 sm:p-4 rounded-2xl border shadow-sm" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Progress</span>
-              <span className="text-sm text-gray-500">{completedCount} of {totalCount} completed</span>
+              <span className="text-xs sm:text-sm font-medium" style={{ color: 'var(--foreground)' }}>Progress</span>
+              <span className="text-xs sm:text-sm" style={{ color: 'var(--muted-foreground)' }}>{completedCount} of {totalCount} completed</span>
             </div>
-            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 sm:h-2 rounded-full overflow-hidden" style={{ background: 'var(--secondary)' }}>
               <div
                 className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500"
                 style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
@@ -140,7 +150,7 @@ export function TaskList() {
           </div>
 
           {/* Task List */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {tasks.map((task) => (
               <TaskItem
                 key={task.id}

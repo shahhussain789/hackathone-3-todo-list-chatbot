@@ -47,8 +47,8 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {justRegistered && (
-        <div className="p-4 text-sm text-green-700 bg-green-50 rounded-xl border border-green-200 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="p-4 text-sm rounded-xl border flex items-center" style={{ color: '#22c55e', background: 'rgba(34, 197, 94, 0.1)', borderColor: 'rgba(34, 197, 94, 0.3)' }}>
+          <svg className="w-5 h-5 mr-2" style={{ color: '#22c55e' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           Account created successfully! Please sign in.
@@ -56,7 +56,7 @@ export function LoginForm() {
       )}
 
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="email" className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
           Email address
         </label>
         <input
@@ -64,7 +64,8 @@ export function LoginForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-900 transition-all duration-200"
+          className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+          style={{ background: 'var(--card)', color: 'var(--foreground)', borderColor: 'var(--border)' }}
           placeholder="you@example.com"
           required
         />
@@ -72,10 +73,10 @@ export function LoginForm() {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="password" className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
             Password
           </label>
-          <a href="#" className="text-sm text-indigo-600 hover:text-indigo-500">
+          <a href="#" className="text-sm" style={{ color: 'var(--primary)' }}>
             Forgot password?
           </a>
         </div>
@@ -84,15 +85,16 @@ export function LoginForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-900 transition-all duration-200"
+          className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+          style={{ background: 'var(--card)', color: 'var(--foreground)', borderColor: 'var(--border)' }}
           placeholder="Enter your password"
           required
         />
       </div>
 
       {error && (
-        <div className="p-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="p-4 text-sm rounded-xl border flex items-center" style={{ color: '#ef4444', background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <svg className="w-5 h-5 mr-2" style={{ color: '#ef4444' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           {error}
@@ -102,7 +104,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+        className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
       >
         {loading ? (
           <>
@@ -119,16 +121,17 @@ export function LoginForm() {
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200"></div>
+          <div className="w-full border-t" style={{ borderColor: 'var(--border)' }}></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-gray-50 text-gray-500">New to TaskFlow?</span>
+          <span className="px-4" style={{ background: 'var(--background)', color: 'var(--muted-foreground)' }}>New to TaskFlow?</span>
         </div>
       </div>
 
       <Link
         href="/signup"
-        className="w-full py-3 px-4 bg-white text-indigo-600 font-semibold rounded-xl border-2 border-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center"
+        className="w-full py-3 px-4 font-semibold rounded-xl border-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center"
+        style={{ background: 'var(--card)', color: 'var(--primary)', borderColor: 'var(--primary)' }}
       >
         Create an account
       </Link>

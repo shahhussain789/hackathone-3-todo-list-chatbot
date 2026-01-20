@@ -5,8 +5,8 @@ export default function LoginPage() {
   return (
     <>
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: 'var(--foreground)' }}>Welcome back</h1>
+        <p className="mt-2" style={{ color: 'var(--muted-foreground)' }}>
           Sign in to continue to your tasks
         </p>
       </div>

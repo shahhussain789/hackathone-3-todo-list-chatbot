@@ -26,26 +26,33 @@ export function TaskForm({ onSubmit, loading = false }: TaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`bg-white p-5 rounded-2xl border-2 shadow-sm transition-all duration-200 ${
-        isFocused ? "border-indigo-300 shadow-md" : "border-gray-100"
+      className={`p-3 sm:p-5 rounded-2xl border-2 shadow-sm transition-all duration-200 ${
+        isFocused ? "shadow-md" : ""
       }`}
+      style={{
+        background: 'var(--card)',
+        borderColor: isFocused ? 'var(--primary)' : 'var(--border)'
+      }}
     >
-      <div className="flex gap-3">
-        <div className="flex-shrink-0 w-6 h-6 mt-2.5 rounded-full border-2 border-dashed border-gray-300"></div>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder="What needs to be done?"
-          className="flex-1 px-0 py-2 text-gray-900 placeholder-gray-400 border-none focus:outline-none focus:ring-0 text-lg"
-          disabled={loading}
-        />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex gap-3 flex-1">
+          <div className="hidden sm:block flex-shrink-0 w-6 h-6 mt-2.5 rounded-full border-2 border-dashed" style={{ borderColor: 'var(--border)' }}></div>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="What needs to be done?"
+            className="flex-1 px-0 py-2 border-none focus:outline-none focus:ring-0 text-base sm:text-lg bg-transparent"
+            style={{ color: 'var(--foreground)' }}
+            disabled={loading}
+          />
+        </div>
         <button
           type="submit"
           disabled={loading || !title.trim()}
-          className="flex-shrink-0 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center"
+          className="flex-shrink-0 px-4 sm:px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
         >
           {loading ? (
             <>
@@ -70,7 +77,8 @@ export function TaskForm({ onSubmit, loading = false }: TaskFormProps) {
         <button
           type="button"
           onClick={() => setShowDescription(true)}
-          className="mt-3 ml-9 text-sm text-gray-400 hover:text-indigo-600 transition-colors flex items-center"
+          className="mt-3 sm:ml-9 text-sm transition-colors flex items-center hover:text-indigo-500"
+          style={{ color: 'var(--muted-foreground)' }}
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -78,12 +86,13 @@ export function TaskForm({ onSubmit, loading = false }: TaskFormProps) {
           Add description
         </button>
       ) : (
-        <div className="mt-3 ml-9">
+        <div className="mt-3 sm:ml-9">
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Add a description (optional)"
-            className="w-full px-4 py-3 text-gray-600 placeholder-gray-400 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none transition-all duration-200 border text-sm sm:text-base"
+            style={{ background: 'var(--secondary)', color: 'var(--foreground)', borderColor: 'var(--border)' }}
             rows={2}
             disabled={loading}
           />
@@ -93,7 +102,8 @@ export function TaskForm({ onSubmit, loading = false }: TaskFormProps) {
               setShowDescription(false);
               setDescription("");
             }}
-            className="mt-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            className="mt-2 text-sm transition-colors hover:text-red-500"
+            style={{ color: 'var(--muted-foreground)' }}
           >
             Remove description
           </button>
